@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+}
+
+.nav {
+  padding: 0.7rem;
+}
+
+.card {
+  padding: 3rem 1.5rem;
+}
+
+form {
+  padding: 1rem;
+}
+
+input,
+textarea {
+  padding: 0.7rem;
+  font-size: 1.2rem;
+  margin-bottom: 2%;
+}
+
+textarea {
+  font-size: 1.1rem;
+  resize: none;
+}
+
+button,
+a {
+  padding: 0.3rem 0.5rem;
+}
+
+.lesson-planner {
+  padding: 2rem;
+}
+
+label {
+  font-size: 1.1rem;
+}
+
+.error-div {
+  padding: 0.5rem;
+}
+
+.p-card {
+  padding: 1rem;
+}
+
+.p-5 {
+  padding: 0.5rem;
+}
+
+.my-5 {
+  margin: 5% 0;
+}
+
+.login {
+  padding: 0.3rem 1.2rem;
+}
+
+.head-tag {
+  background: linear-gradient(to right, pink, plum, purple);
+  background-clip: text;
+  color: transparent;
+}
