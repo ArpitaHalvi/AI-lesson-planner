@@ -49,7 +49,10 @@ export default function LessonPlanPDF() {
         <hr className="mb-5" />
         <div className="">{formattedLessonPlan}</div>
       </div>
-      <Button className="login" onClick={generatePdf}>
+      <Button
+        className="login bg-gray-900 text-lg border border-gray-700 hover:bg-gray-800"
+        onClick={generatePdf}
+      >
         Download as PDF
       </Button>
     </div>

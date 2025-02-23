@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import DarkModeToggler from "../DarkModeToggler";
 
 export default function Navbar() {
   const loggedIn = useSelector((state) => state.auth.isAuthenticated);
@@ -16,9 +17,7 @@ export default function Navbar() {
       >
         <div className="w-1/2 flex gap-4">
           <SchoolIcon />
-          <button className="text-sm bg-amber-200 text-black rounded">
-            Toggle Mode
-          </button>
+          <DarkModeToggler />
         </div>
         <div
           className={`w-3/4 transition-all duration-1000${

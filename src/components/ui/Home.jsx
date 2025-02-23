@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 export default function Home() {
   const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
   return (
-    <div className="w-full bg-black h-[90vh] flex flex-col justify-center items-center gap-3">
+    <div className="w-full bg-black h-[90vh] flex flex-col justify-center items-center gap-3 theme-light:bg-white theme-light:text-black">
       <h1 className="w-3/4 lg:w-1/2 text-white text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-center">
         <span className="head-tag">AI-Powered</span> Lesson Planning for Smarter
         More Efficient Teaching!
