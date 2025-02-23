@@ -27,7 +27,6 @@ export default function LessonPlanPDF() {
     );
   const generatePdf = () => {
     const doc = new jsPDF();
-    doc.text("Hello, this is a PDF generated with jsPDF in React!", 10, 10);
     doc.setFontSize(12);
     const lines = doc.splitTextToSize(lessonPlan, 180);
     doc.text(lines, 10, 20);
