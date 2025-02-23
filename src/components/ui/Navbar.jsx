@@ -31,7 +31,9 @@ export default function Navbar() {
               <NavLink to="/">Home</NavLink>
             </li>
             <li className="text-gray-400 hover:text-gray-300 uppercase">
-              <NavLink to="/lesson-planner">Lesson Planner</NavLink>
+              <NavLink to={loggedIn ? "/lesson-planner" : "/login"}>
+                Lesson Planner
+              </NavLink>
             </li>
           </ul>
           <div className={`flex justify-center items-center gap-5`}>
