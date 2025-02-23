@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "./textarea";
 import { Label } from "./label";
@@ -25,7 +19,7 @@ const initialData = {
 
 export default function LessonPlanner() {
   const [loading, setLoading] = useState(false);
-  const [lessonPlan, setLessonPlan] = useState("");
+  // const [lessonPlan, setLessonPlan] = useState("");
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [lesson, setLesson] = useState(initialData);
@@ -70,9 +64,14 @@ export default function LessonPlanner() {
       if (response.ok) {
         const res_data = await response.json();
         console.log("Response: ", res_data);
-        // candidates[0].content.parts[0].text
-        setLessonPlan(res_data.candidates[0].content.parts[0].text);
-        navigate("/lesson-plans", { state: { lessonPlan } });
+        const generatedLessonPlan =
+          res_data.candidates[0]?.content?.parts[0]?.text ||
+          "No lesson plan generated.";
+        console.log("Generated Lesson Plan: ", generatedLessonPlan);
+        // setLessonPlan(generatedLessonPlan);
+        navigate("/lesson-plan-pdf", {
+          state: { lessonPlan: generatedLessonPlan },
+        });
         setLoading(false);
       } else {
         setError("Error while generating response!");
@@ -95,12 +94,15 @@ export default function LessonPlanner() {
           onClose={() => setModalOpen(false)}
         />
       )}
-      <Card className="w-[45%] flex justify-center items-center p-4 text-lg card">
+      <Card className="w-[100%] sm:w-3/4 md:w-3/4 lg:w-1/2 flex justify-center items-center text-lg card">
         <CardHeader className="text-center text-3xl">
           <CardTitle>LESSON PLAN</CardTitle>
         </CardHeader>
         <CardContent className="w-full p-4">
-          <form className="w-full flex flex-col gap-3 text-lg">
+          <form
+            className="w-full flex flex-col gap-3 text-lg"
+            onSubmit={generateLessonPlan}
+          >
             <Label>Topic</Label>
             <Input
               placeholder="Enter topic"
@@ -166,17 +168,11 @@ export default function LessonPlanner() {
               onChange={handleChange}
               required
             ></Textarea>
+            <Button className="text-base" type="submit" disabled={loading}>
+              {loading ? "Generating please wait..." : "Generate Lesson Plan"}
+            </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <Button
-            className="text-base"
-            type="submit"
-            onClick={generateLessonPlan}
-          >
-            {loading ? "..." : "Generate Lesson Plan"}
-          </Button>
-        </CardFooter>
       </Card>
     </section>
   );

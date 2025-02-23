@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 export default function Signup() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -33,17 +34,29 @@ export default function Signup() {
   };
   const signupUser = (e) => {
     e.preventDefault();
+    if (user.username === "" || user.password === "") {
+      setError("Username or Password is required.");
+      return;
+    }
     try {
       dispatch(signup({ email: user.email, password: user.password }));
       navigate("/lesson-planner");
     } catch (e) {
       setError(e.message);
+      setModalOpen(true);
+      //   console.error(e);
     }
   };
   return (
     <section className="w-full flex justify-center items-center h-[90vh]">
-      {error && <Error msg={error} />}
-      <Card className="w-1/4 h-1/2 flex justify-center items-center p-4 text-lg">
+      {error && (
+        <Error
+          msg={error}
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
+      <Card className="w-[70%] sm:w-1/2 md:w-[40%] lg:w-1/4 h-1/2 flex justify-center items-center p-4 text-lg">
         <CardHeader className="text-center text-3xl">
           <CardTitle>SIGNUP</CardTitle>
         </CardHeader>
@@ -51,11 +64,12 @@ export default function Signup() {
           <form className="w-full flex flex-col gap-3" onSubmit={signupUser}>
             <Input
               placeholder="Email"
-              type="text"
+              type="email"
               className="w-full"
               name="email"
               value={user.email}
               onChange={handleChange}
+              required
             />
             <Input
               placeholder="Password"
@@ -64,13 +78,14 @@ export default function Signup() {
               name="password"
               value={user.password}
               onChange={handleChange}
+              required
             />
+            <Button className="login text-lg cursor-pointer" type="submit">
+              Sign Up
+            </Button>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col gap-3">
-          <Button className="login text-lg cursor-pointer" type="submit">
-            Sign Up
-          </Button>
           <p className="flex text-sm justify-center items-center">
             Already have an account?
             <NavLink className="font-bold" to="/login">

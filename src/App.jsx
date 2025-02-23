@@ -6,6 +6,7 @@ import LessonPlanner from "./components/ui/LessonPlanner";
 import Login from "./components/ui/Login";
 import LessonPlanPDF from "./components/ui/LessonPlanPDF";
 import Signup from "./components/ui/Signup";
+import Logout from "./components/ui/Logout";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/lesson-planner" element={<LessonPlanner />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/lesson-plan-pdf" element={<LessonPlanPDF />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

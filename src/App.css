@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 
 body {
@@ -9,11 +10,11 @@ body {
 }
 
 .nav {
-  padding: 0.7rem;
+  padding: 0.2rem;
 }
 
 .card {
-  padding: 3rem 1.5rem;
+  padding: 3rem 1rem;
 }
 
 form {
@@ -53,8 +54,16 @@ label {
   padding: 1rem;
 }
 
+.p-10 {
+  padding: 2rem;
+}
+
 .p-5 {
   padding: 0.5rem;
+}
+
+.mb-5 {
+  margin-bottom: 2%;
 }
 
 .my-5 {

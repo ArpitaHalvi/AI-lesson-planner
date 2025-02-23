@@ -1,99 +1,57 @@
 /* eslint-disable react/display-name */
-import { forwardRef, useRef } from "react";
+
 import { useLocation } from "react-router-dom";
-import ReactToPrint from "react-to-print";
-
-const PrintableLessonPlan = forwardRef((props, ref) => {
-  const location = useLocation();
-  const lessonPlan = location.state || {};
-  console.log(lessonPlan);
-  //   const {
-  //     topic,
-  //     gradeLevel,
-  //     mainConcept,
-  //     subTopics,
-  //     materialsNeeded,
-  //     learningObjectives,
-  //     lessonOutline,
-  //   } = lessonPlan;`
-
-  //   const materialsRequired = materialsNeeded.split(",");
-
-  return (
-    <section
-      className="w-full flex justify-center items-center min-h-[90vh] p-card"
-      ref={ref}
-    >
-      <div className="w-3/4 bg-white p-card rounded flex flex-col justify-center">
-        <h2 className="text-3xl font-bold p-5 bg-amber-100">Topic: {""}</h2>
-        <hr />
-        <h3 className="p-5 text-lg bg-blue-200">Summary</h3>
-        <table className="my-5">
-          <tr className="">
-            <th className="p-5 border border-gray-500">Date</th>
-            <td className="p-5 border border-gray-500">
-              {new Date().toLocaleDateString()}
-            </td>
-          </tr>
-          <tr>
-            <th className="p-5 border border-gray-500">Subject</th>
-            <td className="p-5 border border-gray-500">{""}</td>
-          </tr>
-          <tr>
-            <th className="p-5 border border-gray-500">
-              Year Group or Grade Level
-            </th>
-            <td className="p-5 border border-gray-500">{""}</td>
-          </tr>
-          <tr>
-            <th className="p-5 border border-gray-500">Main Topic or Unit</th>
-            <td className="p-5 border border-gray-500">{""}</td>
-          </tr>
-          <tr>
-            <th className="p-5 border border-gray-500">
-              Subtopics or Key Concepts
-            </th>
-            <td className="p-5 border border-gray-500">{""}</td>
-          </tr>
-        </table>
-        <h3>Materials Needed</h3>
-        <ul>
-          {/* {materialsRequired.map((material, index) => {
-            return <li key={index}>{material}</li>;
-          })} */}
-        </ul>
-        <h3 className="bg-blue-100 p-5 font-bold">Learning Objectives</h3>
-        <p className="p-5">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde
-          laudantium quidem aperiam eos eaque odit sapiente rem molestiae minima
-          quae nobis ratione deleniti, tempore dignissimos aliquid voluptatem
-          culpa repellendus officiis nemo illum libero laborum fugit numquam
-          explicabo? Ipsum qui tempora rem, mollitia velit dolorum, corrupti
-          aperiam harum deserunt, neque nihil.
-        </p>
-        <h3 className="bg-blue-100 p-5 font-bold">Lesson Outline</h3>
-        <p className="p-5">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-          Reprehenderit unde assumenda, necessitatibus, in fugit quaerat iure
-          molestias animi veniam repellendus soluta consequatur alias nulla
-          cupiditate quidem odit odio dolor iusto id! Quo labore quia vel
-          suscipit placeat dolore officia, similique, iusto dignissimos dolorem
-          odio quisquam? Veritatis non molestias blanditiis quae.
-        </p>
-      </div>
-    </section>
-  );
-});
+import { Button } from "./button";
+import jsPDF from "jspdf";
+import { useState } from "react";
+import Error from "./Error";
 
 export default function LessonPlanPDF() {
-  const componentRef = useRef();
+  const location = useLocation();
+  const [error, setError] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const lessonPlan = location.state?.lessonPlan || "No data available";
+  console.log("Location State: ", location.state?.lessonPlan);
+  const formattedLessonPlan = lessonPlan
+    .replace(/#/g, " ")
+    // .replace(/\*/g, " ")
+    .split("\n")
+    .map((line, index) =>
+      line.startsWith("*") ? (
+        <li key={index}>{line.replace(/\*/g, "").trim()}</li>
+      ) : (
+        <p key={index} className="mb-5">
+          {line.replace(/\*/g, "")}
+        </p>
+      )
+    );
+  const generatePdf = () => {
+    const doc = new jsPDF();
+    doc.text("Hello, this is a PDF generated with jsPDF in React!", 10, 10);
+    doc.setFontSize(12);
+    const lines = doc.splitTextToSize(lessonPlan, 180);
+    doc.text(lines, 10, 20);
+    try {
+      doc.save("LessonPlan.pdf");
+    } catch (e) {
+      setError(e.message);
+    }
+  };
   return (
-    <div>
-      <ReactToPrint
-        trigger={() => <button>Download as PDf</button>}
-        content={() => componentRef.current}
+    <div className="w-full min-h-[90vh] p-10 flex justify-center items-center flex-col gap-5">
+      <Error
+        msg={error}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
       />
-      <PrintableLessonPlan ref={componentRef} />
+      <div className="bg-white text-base w-[100%] sm:w-3/4 md:w-3/4 lg:w-[70%] xl:w-[60%] p-10 rounded xl:text-lg">
+        <h2 className="text-center text-2xl font-bold  mb-5">LESSON PLAN</h2>
+        <hr className="mb-5" />
+        <div className="">{formattedLessonPlan}</div>
+      </div>
+      <Button className="login" onClick={generatePdf}>
+        Download as PDF
+      </Button>
     </div>
   );
 }
